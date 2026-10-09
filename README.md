@@ -92,6 +92,21 @@ Create `~/.xinitrc`
 touch ~/.xinitrc
 ```
 
+Add following
+
+```bash
+#!/bin/sh
+
+alacritty &
+exec oxwm
+```
+
+Optionally direct oxwm output for debugging
+
+```bash
+exec oxwm > "$HOME/oxwm.log" 2>&1
+```
+
 ## starting oxwm
 
 after logging in, just run `startx`
