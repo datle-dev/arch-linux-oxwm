@@ -160,11 +160,14 @@ Install ly.
 sudo pacman -S ly
 ```
 
+Create a desktop entry for oxwm.
+Create `xsessions` folder.
+
 ```bash
 sudo mkdir -p /usr/share/xsessions
 ```
 
-Create a desktop entry in neovim.
+Create a desktop entry with neovim.
 
 ```bash
 nvim /usr/share/xsessions/oxwm.desktop
@@ -175,7 +178,7 @@ Add the following to the desktop entry.
 ```bash
 [Desktop Entry]
 Name=oxwm
-Comment=oxwm X11 window manager
+Comment=oxwm window manager
 Exec=oxwm
 Type=Application
 ```
@@ -185,4 +188,10 @@ Disable `getty` and enable `ly`.
 ```bash
 sudo systemctl disable getty@tty1.service
 sudo systemctl enable ly@tty1.service
+```
+
+Restart and `ly` display manager should launch with session, username, and password prompt.
+
+```bash
+sudo reboot
 ```
