@@ -98,8 +98,7 @@ Install oxwm default terminal and launcher.
 sudo pacman -S alacritty dmenu
 ```
 
-```
-## oxwm setup
+## oxwm Setup
 
 Initialize oxwm config file.
 
