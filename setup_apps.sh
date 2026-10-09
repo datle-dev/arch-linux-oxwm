@@ -7,6 +7,7 @@ sudo pacman -S \
     clang \
     eza \
     fzf \
+    go \
     lazygit \
     ripgrep \
     tree-sitter-cli \
