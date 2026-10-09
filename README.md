@@ -132,3 +132,23 @@ exec oxwm > "$HOME/oxwm.log" 2>&1
 ## Starting oxwm
 
 After logging in, just run `startx`.
+
+## Display Resolution for VM
+
+Install `xorg-xrandr`.
+
+```bash
+sudo pacman -S xorg-xrandr
+```
+
+Check available displays and resolutions with `xrandr`.
+
+```bash
+xrandr
+```
+
+Set output and resolution.
+
+```bash
+xrandr --output Virtual-1 --mode 1920x1080
+```
