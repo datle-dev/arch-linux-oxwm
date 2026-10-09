@@ -152,3 +152,37 @@ Set output and resolution.
 ```bash
 xrandr --output Virtual-1 --mode 1920x1080
 ```
+## Ly Display Manager
+
+Install ly.
+
+```bash
+sudo pacman -S ly
+```
+
+```bash
+sudo mkdir -p /usr/share/xsessions
+```
+
+Create a desktop entry in neovim.
+
+```bash
+nvim /usr/share/xsessions/oxwm.desktop
+```
+
+Add the following to the desktop entry.
+
+```bash
+[Desktop Entry]
+Name=oxwm
+Comment=oxwm X11 window manager
+Exec=oxwm
+Type=Application
+```
+
+Disable `getty` and enable `ly`.
+
+```bash
+sudo systemctl disable getty@tty1.service
+sudo systemctl enable ly@tty1.service
+```
