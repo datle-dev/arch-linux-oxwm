@@ -100,7 +100,9 @@ Exec=$HOME/.config/oxwm/startup.sh
 Type=Application
 EOF
 
-# disable getty and enable ly
+# preserve getty on tty1, disable getty and enable ly on tty2
+sudo systemctl enable getty@tty1.service
+
 sudo systemctl disable getty@tty2.service
 sudo systemctl enable ly@tty2.service
 
