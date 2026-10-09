@@ -13,7 +13,8 @@ Install archlinux using `archinstall` script:
 ## Optional Setup
 
 Optionally install SSH and neovim to do setup remotely with preferred code editor.
-Remote setup allows for copy + paste into local terminal.
+
+Remote setup allows for copy + paste into local terminal emulator.
 
 ### SSH
 
