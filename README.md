@@ -69,7 +69,7 @@ cd oxwm
 sudo zig build -Doptimize=ReleaseSmall --prefix /usr
 ```
 
-## fonts
+## Fonts
 
 Minimal install comes with no fonts, so install them.
 
