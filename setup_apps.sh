@@ -6,12 +6,14 @@ sudo pacman -S \
     bat \
     clang \
     eza \
+    fish \
     fzf \
     go \
     lazygit \
     ripgrep \
     tree-sitter-cli \
     unzip \
+    xclip \
     wget
 
 # install astral uv
