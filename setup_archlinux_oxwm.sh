@@ -12,6 +12,8 @@ sudo pacman -S --needed \
 
 sudo pacman -S alacritty dmenu git ly openssh xorg-xrandr --noconfirm
 
+sudo systemctl enable --now sshd
+
 sudo pacman -S ttf-dejavu ttf-liberation noto-fonts --noconfirm
 fc-cache-fv
 
