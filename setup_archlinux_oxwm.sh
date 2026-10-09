@@ -8,10 +8,11 @@ sudo pacman -S --needed \
   libxft \
   libxinerama \
   zig \
+  --noconfirm
 
-sudo pacman -S alacritty dmenu git ly openssh xorg-xrandr
+sudo pacman -S alacritty dmenu git ly openssh xorg-xrandr --noconfirm
 
-sudo pacman -S ttf-dejavu ttf-liberation noto-fonts
+sudo pacman -S ttf-dejavu ttf-liberation noto-fonts --noconfirm
 fc-cache-fv
 
 mkdir -p ~/src
