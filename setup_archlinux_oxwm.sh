@@ -1,0 +1,52 @@
+#!/bin/sh
+
+sudo pacman -S --needed \
+  base-devel \
+  freetype2 \
+  fontconfig \
+  libx11 \
+  libxft \
+  libxinerama \
+  zig \
+
+sudo pacman -S alacritty dmenu git ly openssh xorg-xrandr
+
+sudo pacman -S ttf-dejavu ttf-liberation noto-fonts
+fc-cache-fv
+
+mkdir -p ~/src
+cd ~/src
+git clone https://github.com/tonybanters/oxwm
+cd oxwm
+sudo zig build -Doptimize=ReleaseSmall --prefix /usr
+
+cd /opt
+sudo curl -L -O https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz
+sudo tar -xf nvim-linux-x86_64.tar.gz --one-top-level=nvim --strip-components=1
+sudo ln -s /opt/nvim/bin/nvim /usr/local/bin/nvim
+
+cd
+
+oxwm --init
+
+cat << 'EOF' > ~/.xinitrc
+#!/bin/sh
+xrandr --output Virtual-1 --mode 1920x1080
+alacritty & 
+exec oxwm > "$HOME/oxwm.log" 2>&1
+EOF
+
+chmod +x ~/.xinitrc
+
+sudo mkdir -p /usr/share/xsessions
+
+cat << 'EOF' > /usr/share/xsessions/oxwm.desktop
+[Desktop Entry]
+Name=oxwm
+Comment=oxwm window manager
+Exec=oxwm
+Type=Application
+EOF
+
+sudo systemctl disable getty@tty1.service
+sudo systemctl enable ly@tty1.service
