@@ -43,6 +43,7 @@ Create symlink.
 
 ```bash
 sudo ln -s /opt/nvim/bin/nvim /usr/local/bin/nvim
+```
 
 ## oxwm
 
