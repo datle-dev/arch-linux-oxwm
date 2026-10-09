@@ -62,7 +62,7 @@ cd ~/src
 ```
 
 Clone oxwm repo and build.
-Note `zig build` needs `sudo` permission because it will install binary to `/usr/local/bin`.
+Note `zig build` needs `sudo` permission because it will install binary to `/usr/bin`.
 
 ```bash
 git clone https://github.com/tonybanters/oxwm
