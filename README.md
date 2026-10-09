@@ -57,7 +57,7 @@ Make a `src` folder in home directory to build oxwm.
 
 ```bash
 mkdir ~/src
-cd src
+cd ~/src
 ```
 
 Clone oxwm repo and build.
