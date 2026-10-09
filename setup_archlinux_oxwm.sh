@@ -32,20 +32,23 @@ oxwm --init
 
 cat << 'EOF' > ~/.xinitrc
 #!/bin/sh
+exec "$HOME/.config/oxwm/startup.sh"
+EOF
+
+cat << 'EOF' > ~/.config/oxwm/startup.sh
+#!/bin/sh
 xrandr --output Virtual-1 --mode 1920x1080
-alacritty & 
 exec oxwm > "$HOME/oxwm.log" 2>&1
 EOF
 
 chmod +x ~/.xinitrc
+chmod +x ~/.config/oxwm/startup.sh
 
-sudo mkdir -p /usr/share/xsessions
-
-sudo cat << 'EOF' > /usr/share/xsessions/oxwm.desktop
+sudo install -Dm644 /dev/stdin /usr/share/xsessions/oxwm.desktop <<EOF
 [Desktop Entry]
 Name=oxwm
-Comment=oxwm window manager
-Exec=oxwm
+Comment=Minimal X11 window manager
+Exec=$HOME/.config/oxwm/startup.sh
 Type=Application
 EOF
 
