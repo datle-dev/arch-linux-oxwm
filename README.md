@@ -1,6 +1,6 @@
 # arch-linux-oxwm
 
-## archlinux
+## Arch Linux
 
 If installing archlinux in a VM, ensure that firmware is UEFI.
 
@@ -9,6 +9,40 @@ Install archlinux using `archinstall` script:
 - Btrfs snapshots with Snapper
 - Limine bootloader
 - Xorg profile
+
+## Optional Setup
+
+Optionally install SSH and neovim to do setup remotely with preferred code editor.
+
+### SSH
+
+Install SSH.
+
+```bash
+sudo pacman -S openssh
+```
+
+Enable and immediately start SSH service.
+
+```bash
+sudo systemctl enable --now sshd
+```
+
+### neovim
+
+Get latest nightly release of neovim.
+Assuming `wget` is not installed, use `curl` instead and put prebuilt binary into `/opt`.
+
+```bash
+cd /opt
+sudo curl -L -O https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz
+sudo tar -xvzf nvim-linux-x86_64.tar.gz -C nvim --strip-components=1
+```
+
+Create symlink.
+
+```bash
+sudo ln -s /opt/nvim/bin/nvim /usr/local/bin/nvim
 
 ## oxwm
 
@@ -62,21 +96,6 @@ Install oxwm default terminal and launcher.
 sudo pacman -S alacritty dmenu
 ```
 
-## neovim
-
-Get latest nightly release of neovim.
-Assuming `wget` is not installed, use `curl` instead and put prebuilt binary into `/opt`.
-
-```bash
-cd /opt
-sudo curl -L -O https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz
-sudo tar -xvzf nvim-linux-x86_64.tar.gz -C nvim --strip-components=1
-```
-
-Create symlink.
-
-```bash
-sudo ln -s /opt/nvim/bin/nvim /usr/local/bin/nvim
 ```
 ## oxwm setup
 
