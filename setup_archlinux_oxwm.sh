@@ -1,60 +1,95 @@
 #!/bin/sh
+set -eu
 
 # install oxwm build dependencies
-sudo pacman -S --needed \
-  base-devel \
-  freetype2 \
-  fontconfig \
-  libx11 \
-  libxft \
-  libxinerama \
-  zig \
-  --noconfirm
+sudo pacman -S --needed --noconfirm \
+    base-devel \
+    zig \
+    git \
+    curl \
+    freetype2 \
+    fontconfig \
+    libx11 \
+    libxft \
+    libxinerama \
+    alacritty \
+    dmenu \
+    ly \
+    openssh \
+    xorg-xauth \
+    xorg-xrandr \
+    ttf-dejavu \
+    ttf-liberation \
+    noto-fonts
 
-# install oxwm default applications, utilities, display manager, and x11 display resolution utility
-sudo pacman -S alacritty dmenu git ly openssh xorg-xrandr --noconfirm
+# reload font cache
+fc-cache -fv
 
 # enable ssh
-sudo systemctl enable --now sshd
+sudo systemctl enable --now sshd.service
 
-# install fonts because minimal arch install won't have them,
-# then reload font cache
-sudo pacman -S ttf-dejavu ttf-liberation noto-fonts --noconfirm
-fc-cache-fv
+# clone oxwm repo and build as local user
+mkdir -p "$HOME/src" "$HOME/.local/bin"
 
-# clone oxwm repo and build
-mkdir -p ~/src
-cd ~/src
-git clone https://github.com/tonybanters/oxwm
-cd oxwm
-sudo zig build -Doptimize=ReleaseSmall --prefix /usr
+if [ ! -d "$HOME/src/oxwm/.git" ]; then
+    git clone https://github.com/tonybanters/oxwm \
+        "$HOME/src/oxwm"
+fi
+
+cd "$HOME/src/oxwm"
+
+zig build -Doptimize=ReleaseSmall \
+    --prefix "$HOME/.local"
+
+# install binary system-wide
+sudo install -Dm755 \
+    "$HOME/.local/bin/oxwm" \
+    /usr/local/bin/oxwm
 
 # install nightly build of neovim
-cd /opt
-sudo curl -L -O https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz
-sudo tar -xf nvim-linux-x86_64.tar.gz --one-top-level=nvim --strip-components=1
-sudo ln -s /opt/nvim/bin/nvim /usr/local/bin/nvim
+NVIM_ARCHIVE=$(mktemp)
+NVIM_DIR=$(mktemp -d)
+trap 'rm -f "$NVIM_ARCHIVE"; rm -rf "$NVIM_DIR"' EXIT
+
+curl -fL \
+    https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz \
+    -o "$NVIM_ARCHIVE"
+
+tar -xzf "$NVIM_ARCHIVE" \
+    -C "$NVIM_DIR" \
+    --strip-components=1
+
+sudo mkdir -p /opt/nvim
+sudo cp -a "$NVIM_DIR/." /opt/nvim/
+sudo ln -sfn /opt/nvim/bin/nvim /usr/local/bin/nvim
 
 # get default oxwm config file
-cd
-oxwm --init
+cd "$HOME"
+
+mkdir -p "$HOME/.config/oxwm"
+
+if [ ! -f "$HOME/.config/oxwm/config.lua" ]; then
+    oxwm --init
+fi
 
 # create .xinitrc, point to custom startup script
-cat << 'EOF' > ~/.xinitrc
+cat > "$HOME/.config/oxwm/startup.sh" <<'EOF'
+#!/bin/sh
+
+xrandr --output Virtual-1 --mode 1920x1080
+
+exec oxwm > "$HOME/oxwm.log" 2>&1
+EOF
+
+chmod 755 "$HOME/.config/oxwm/startup.sh"
+
+# keep startx support
+cat > "$HOME/.xinitrc" <<'EOF'
 #!/bin/sh
 exec "$HOME/.config/oxwm/startup.sh"
 EOF
 
-# create custom startup script
-cat << 'EOF' > ~/.config/oxwm/startup.sh
-#!/bin/sh
-xrandr --output Virtual-1 --mode 1920x1080
-exec oxwm > "$HOME/oxwm.log" 2>&1
-EOF
-
-# make both executable
-chmod +x ~/.xinitrc
-chmod +x ~/.config/oxwm/startup.sh
+chmod 755 "$HOME/.xinitrc"
 
 # create desktop session file that points to custom startup script
 sudo install -Dm644 /dev/stdin /usr/share/xsessions/oxwm.desktop <<EOF
@@ -68,3 +103,5 @@ EOF
 # disable getty and enable ly
 sudo systemctl disable getty@tty1.service
 sudo systemctl enable ly@tty1.service
+
+echo "Setup complete. Reboot to start Ly."
