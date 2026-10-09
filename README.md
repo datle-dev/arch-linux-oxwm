@@ -37,7 +37,7 @@ Assuming `wget` is not installed, use `curl` instead and put prebuilt binary int
 ```bash
 cd /opt
 sudo curl -L -O https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz
-sudo tar -xf nvim-linux-x86_64.tar.gz --one-top-level=nvim
+sudo tar -xf nvim-linux-x86_64.tar.gz --one-top-level=nvim --strip-components=1
 ```
 
 Create symlink.
