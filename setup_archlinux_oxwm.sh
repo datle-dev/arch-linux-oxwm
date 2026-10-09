@@ -101,7 +101,7 @@ Type=Application
 EOF
 
 # disable getty and enable ly
-sudo systemctl disable getty@tty1.service
-sudo systemctl enable ly@tty1.service
+sudo systemctl disable getty@tty2.service
+sudo systemctl enable ly@tty2.service
 
 echo "Setup complete. Reboot to start Ly."
