@@ -41,7 +41,7 @@ chmod +x ~/.xinitrc
 
 sudo mkdir -p /usr/share/xsessions
 
-cat << 'EOF' > /usr/share/xsessions/oxwm.desktop
+sudo cat << 'EOF' > /usr/share/xsessions/oxwm.desktop
 [Desktop Entry]
 Name=oxwm
 Comment=oxwm window manager
